@@ -9,6 +9,7 @@ fn main() {
     let mut database = Database::new().expect("Creating db failed");
     database.insert(key.to_uppercase(), value.clone());
     database.insert(key, value);
+
     match database.flush() {
         Ok(()) => println!("YAY!"),
         Err(err) => println!("OH NOS! Error! {}", err),
@@ -29,11 +30,11 @@ impl Database {
         //         return Err(error);
         //     }
         // };
-       
+
         // Morally equivalent to adding "?"...
         let mut map = HashMap::new();
         let contents = std::fs::read_to_string("kv.db")?;
-        // Parse the string 
+        // Parse the string
         for line in contents.lines() {
             let mut chunks = line.splitn(2, '\t');
             let key = chunks.next().expect("No key!");
@@ -41,11 +42,8 @@ impl Database {
             // Populate the map
             map.insert(key.to_owned(), value.to_owned());
         }
-         
-        Ok(Database {
-            map,
-            flush: false
-        })
+
+        Ok(Database { map, flush: false })
     }
 
     // If rust screams at you:
